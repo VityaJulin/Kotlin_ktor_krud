@@ -30,9 +30,9 @@ class RepositoryInMemoryWithMutexImpl : Repository {
                     copy
                 }
                 else -> {
-                    // TODO:
-                    items[index] = item
-                    item
+                    val copy = items[index].copy(author = item.author, content = item.content)
+                    items[index] = copy
+                    copy
                 }
             }
         }
