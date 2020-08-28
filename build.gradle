@@ -15,13 +15,6 @@ group 'com.example'
 version '0.0.1'
 mainClassName = "com.example.ApplicationKt"
 
-sourceSets {
-    main.kotlin.srcDirs = main.java.srcDirs = ['src']
-    test.kotlin.srcDirs = test.java.srcDirs = ['test']
-    main.resources.srcDirs = ['resources']
-    test.resources.srcDirs = ['testresources']
-}
-
 repositories {
     mavenLocal()
     jcenter()
@@ -34,7 +27,7 @@ dependencies {
     implementation "ch.qos.logback:logback-classic:1.2.3"
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.3.3'
     implementation 'org.kodein.di:kodein-di-framework-ktor-server-jvm:6.3.3'
-    implementation "io.ktor:ktor-server-tests:1.2.4"
+    testImplementation "io.ktor:ktor-server-tests:1.2.4"
 }
 
 task stage(dependsOn: installDist)
