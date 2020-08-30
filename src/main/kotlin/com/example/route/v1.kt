@@ -45,5 +45,9 @@ fun Routing.v1() {
             val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
             repo.dislikeById(id)
         }
+        post("/{id}") {
+            val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
+            repo.repostById(id)
+        }
     }
 }

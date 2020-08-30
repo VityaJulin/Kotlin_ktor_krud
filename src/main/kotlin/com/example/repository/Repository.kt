@@ -9,4 +9,5 @@ interface Repository {
     suspend fun removeById(id: Long)
     suspend fun likeById(id: Long): PostModel?
     suspend fun dislikeById(id: Long): PostModel?
+    suspend fun repostById(id: Long): PostModel?
 }

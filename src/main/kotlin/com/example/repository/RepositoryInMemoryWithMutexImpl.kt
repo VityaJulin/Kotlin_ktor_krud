@@ -1,6 +1,7 @@
 package com.example.repository
 
 import com.example.model.PostModel
+import com.example.model.PostType
 import kotlinx.coroutines.sync.Mutex
 import kotlinx.coroutines.sync.withLock
 
@@ -78,6 +79,18 @@ class RepositoryInMemoryWithMutexImpl : Repository {
                     }
                     copy
                 }
+            }
+        }
+    }
+
+    override suspend fun repostById(id: Long): PostModel? {
+        return when (val index = items.indexOfFirst { it.id == id }) {
+            -1 -> null
+            else -> {
+                val item = items[index]
+                val copy = item.copy(postType = PostType.REPOST)
+                save(copy)
+                copy
             }
         }
     }
