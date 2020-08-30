@@ -37,5 +37,13 @@ fun Routing.v1() {
             repo.removeById(id)
             call.respond(HttpStatusCode.NoContent)
         }
+        post("/{id}") {
+            val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
+            repo.likeById(id)
+        }
+        post("/{id}") {
+            val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
+            repo.dislikeById(id)
+        }
     }
 }
