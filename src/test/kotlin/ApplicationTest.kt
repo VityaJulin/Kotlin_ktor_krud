@@ -2,10 +2,7 @@ package com.example.test
 
 import com.example.module
 import io.ktor.http.*
-import io.ktor.server.testing.contentType
-import io.ktor.server.testing.handleRequest
-import io.ktor.server.testing.setBody
-import io.ktor.server.testing.withTestApplication
+import io.ktor.server.testing.*
 import org.junit.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertTrue
@@ -40,6 +37,26 @@ class ApplicationTest {
                 response
                 assertEquals(HttpStatusCode.OK, response.status())
                 assertTrue(response.content!!.contains("\"id\": 1"))
+            }
+        }
+    }
+
+    @Test
+    fun testReposts() {
+        withTestApplication({ module() }) {
+            with(handleRequest(HttpMethod.Post, "/api/v1/reposts") {
+                addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+                setBody(
+                    """
+                        {
+                            "id": 0,
+                        }
+                    """.trimIndent()
+                )
+            })
+            {
+                response
+                assertEquals(HttpStatusCode.OK, response.status())
             }
         }
     }

@@ -37,7 +37,7 @@ fun Routing.v1() {
             repo.removeById(id)
             call.respond(HttpStatusCode.NoContent)
         }
-        post("/like/{id}") {
+        post("/likes/{id}") {
             val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
             val response = repo.likeById(id)
             if (response != null) {
@@ -46,7 +46,7 @@ fun Routing.v1() {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
-        post("/dislike/{id}") {
+        post("/dislikes/{id}") {
             val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
             val response = repo.dislikeById(id)
             if (response != null) {
@@ -55,7 +55,7 @@ fun Routing.v1() {
                 call.respond(HttpStatusCode.NotFound)
             }
         }
-        post("/repost/{id}") {
+        post("/reposts/{id}") {
             val id = call.parameters["id"]?.toLongOrNull() ?: throw ParameterConversionException("id", "Long")
             val response = repo.repostById(id)
             if (response != null) {
