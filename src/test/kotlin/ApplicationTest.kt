@@ -56,6 +56,36 @@ class ApplicationTest {
         }
     }
 
+    @Test
+    fun testLikes() {
+        withTestApplication({ module() }) {
+            withTestApplication({ module() }) {
+                addPost()
+                with(handleRequest(HttpMethod.Post, "/api/v1/posts/likes/1") {
+                    addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+                })
+                {
+                    assertTrue(response.content!!.contains(""""likes": 1"""))
+                }
+            }
+        }
+    }
+
+    @Test
+    fun testDislikes() {
+        withTestApplication({ module() }) {
+            withTestApplication({ module() }) {
+                addPostWithLike()
+                with(handleRequest(HttpMethod.Post, "/api/v1/posts/dislikes/1") {
+                    addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+                })
+                {
+                    assertTrue(response.content!!.contains(""""likes": 0"""))
+                }
+            }
+        }
+    }
+
     private fun TestApplicationEngine.addPost(): TestApplicationCall =
         handleRequest(HttpMethod.Post, "/api/v1/posts") {
             addHeader(HttpHeaders.ContentType, jsonContentType.toString())
@@ -64,6 +94,20 @@ class ApplicationTest {
                         {
                             "id": 0,
                             "author": "Vasya"
+                        }
+                    """.trimIndent()
+            )
+        }
+
+    private fun TestApplicationEngine.addPostWithLike(): TestApplicationCall =
+        handleRequest(HttpMethod.Post, "/api/v1/posts") {
+            addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+            setBody(
+                """
+                        {
+                            "id": 0,
+                            "author": "Vasya",
+                            "likes": 1
                         }
                     """.trimIndent()
             )
