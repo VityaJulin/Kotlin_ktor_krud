@@ -43,6 +43,7 @@ class ApplicationTest {
 
     @Test
     fun testReposts() {
+        addPost()
         withTestApplication({ module() }) {
             with(handleRequest(HttpMethod.Post, "/api/v1/reposts") {
                 addHeader(HttpHeaders.ContentType, jsonContentType.toString())
@@ -57,6 +58,22 @@ class ApplicationTest {
             {
                 response
                 assertEquals(HttpStatusCode.OK, response.status())
+            }
+        }
+    }
+
+    private fun addPost() {
+        withTestApplication({ module() }) {
+            handleRequest(HttpMethod.Post, "/api/v1/posts") {
+                addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+                setBody(
+                    """
+                        {
+                            "id": 0,
+                            "author": "Vasya"
+                        }
+                    """.trimIndent()
+                )
             }
         }
     }
