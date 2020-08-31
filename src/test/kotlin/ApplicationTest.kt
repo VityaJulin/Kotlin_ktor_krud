@@ -43,38 +43,29 @@ class ApplicationTest {
 
     @Test
     fun testReposts() {
-        addPost()
         withTestApplication({ module() }) {
-            with(handleRequest(HttpMethod.Post, "/api/v1/reposts") {
-                addHeader(HttpHeaders.ContentType, jsonContentType.toString())
-                setBody(
-                    """
-                        {
-                            "id": 0,
-                        }
-                    """.trimIndent()
-                )
-            })
-            {
-                response
-                assertEquals(HttpStatusCode.OK, response.status())
+            withTestApplication({ module() }) {
+                addPost()
+                with(handleRequest(HttpMethod.Post, "/api/v1/posts/reposts/1") {
+                    addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+                })
+                {
+                    assertTrue(response.content!!.contains(""""postType": "REPOST""""))
+                }
             }
         }
     }
 
-    private fun addPost() {
-        withTestApplication({ module() }) {
-            handleRequest(HttpMethod.Post, "/api/v1/posts") {
-                addHeader(HttpHeaders.ContentType, jsonContentType.toString())
-                setBody(
-                    """
+    private fun TestApplicationEngine.addPost(): TestApplicationCall =
+        handleRequest(HttpMethod.Post, "/api/v1/posts") {
+            addHeader(HttpHeaders.ContentType, jsonContentType.toString())
+            setBody(
+                """
                         {
                             "id": 0,
                             "author": "Vasya"
                         }
                     """.trimIndent()
-                )
-            }
+            )
         }
-    }
 }
